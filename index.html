@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container{
+
+            height: auto;
+            min-width: 100vw;
+            min-height: 100vh;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            flex-direction: row-reverse;
+        }
+        #form-container{
+height: 20rem;
+width: 20rem;
+background-color: rgb(96, 23, 131);
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+border-radius: 2%;
+padding-top:8px;
+
+
+gap:2%
+            
+        }
+        #input{
+            /* width: 2rem; */
+            height:2rem;
+            width: 80%;
+        }.openLeftDoor{
+        
+            animation: leftDoor 5s linear alternate;
+        }
+        @keyframes leftDoor {
+    0% {
+        transform: translateX(0%);
+    }
+    50% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+        .openrightDoor{
+            /* openrightDoor */
+            /* transform:translateX(100%);
+            transition:transform 2.5s ease-in-out; */
+            animation: rightDoor 5s linear alternate;
+        }
+        @keyframes rightDoor {
+    0% {
+        transform: translateX(0%);
+    }
+    50% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+        .closeLeftDoor{
+            transform:translateX(100%);
+            transition:transform 2.5s ease-in-out;
+        }
+        .closerightDoor{
+            /* openrightDoor */
+            transform:translateX(-100%);
+            transition:transform 2.5s ease-in-out;
+        }
+        .rightlift{
+            height: 100px;
+    width: 50%;
+    background-color: white;
+    border: 2px solid grey;
+        }
+        .leftLift{
+            height: 100px;
+    width: 50%;
+    background-color: white;
+    border: 2px solid grey;
+    /* Any other existing styles */
+        }
+    </style>
+</head>
+<body>
+       <div class="container">
+           <div id="form-container">
+            <input placeholder="Please Enter no of floors"   type="number"    id="no-of-floor" >
+           </input>
+        <input placeholder="Please Enter no of lift"  type="number"   id="no-of-lift" >
+        </input>
+        <button  id="submit" style="width: 50%;height: 3rem;">
+            Submit
+        </button>
+
+           </div>
+
+       </div>
+ 
+</body>
+<script src="./src/js/index.js"></script>
+</html>
