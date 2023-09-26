@@ -1,7 +1,7 @@
 console.log("Inside index.js file")
 const submit =document.getElementById("submit")
 // const container=document.getElementById("container")
-const container=document.querySelector(".container")
+const container=document.querySelector(".main")
 const noOfLiftElement=document.querySelector("#no-of-lift")
 const noOfFloorElement=document.querySelector("#no-of-floor")
 let noofLift;
@@ -20,9 +20,9 @@ if(noOfLiftElement&&noOfLiftElement.value==""){
     )
     return
 }
-if(noOfLiftElement&&noOfLiftElement.value>10){
+if(noOfLiftElement&& (noOfLiftElement.value>10 || noOfLiftElement.value<1 )){
     alert(
-        "Lift must be lest than 12"
+        "No of Lift lies between 1 to 10"
     )
     return
 }
@@ -32,15 +32,19 @@ if(noOfFloorElement&&noOfFloorElement.value==""){
     )
     return
 }
-if(noOfFloorElement&&noOfFloorElement.value>10){
+if(noOfFloorElement&&noOfFloorElement.value>10 ||noOfFloorElement.value<1  ){
     alert(
-        "Lift must be lest than 12"
+        "No of FLoor muset be lies between 1 between 10"
     )
     return
 }
+container.innerHTML=""
 ;
 noOfFloor=noOfFloorElement.value
 noofLift=noOfLiftElement.value
+noOfLiftElement.value=""
+noOfFloorElement.value=""
+
 let element=document.createElement("div")
 
 
@@ -80,8 +84,6 @@ container.style.cssText=" width:auto;min-width:100vw"
     element.appendChild(currentFloor)
 
 }
-    container.innerHTML = ""
-    // container.style.backgroundColor="#ddd"
     
 
     container.appendChild(element)
