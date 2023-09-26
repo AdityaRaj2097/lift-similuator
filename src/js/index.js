@@ -20,7 +20,7 @@ if(noOfLiftElement&&noOfLiftElement.value==""){
     )
     return
 }
-if(noOfLiftElement&&noOfLiftElement.value>12){
+if(noOfLiftElement&&noOfLiftElement.value>10){
     alert(
         "Lift must be lest than 12"
     )
@@ -29,6 +29,12 @@ if(noOfLiftElement&&noOfLiftElement.value>12){
 if(noOfFloorElement&&noOfFloorElement.value==""){
     alert(
         "pleae Enter no of Floors"
+    )
+    return
+}
+if(noOfFloorElement&&noOfFloorElement.value>10){
+    alert(
+        "Lift must be lest than 12"
     )
     return
 }
@@ -58,21 +64,25 @@ for(let i=noOfFloor;i>0;i--){
 let upDownContainer=document.createElement("div")
 upButton.addEventListener('click', this.callingLift)
 downButton.addEventListener('click',this. callingLift)
+upButton.style.cssText="min-width:100%"
+downButton.style.cssText="min-width:100%"
+container.style.cssText=" width:auto;min-width:100vw"
     upDownContainer.appendChild(upButton)
     upDownContainer.appendChild(downButton)
-    upDownContainer.style.cssText="display:flex; flex-direction:column ;justify-content: space-around"
+    upDownContainer.style.cssText="display:flex; flex-direction:column ;justify-content: space-around;min-width:80px"
     upDownContainer.setAttribute("id",`Floor-up-down${i}`)
     currentFloor.setAttribute("id",`Floor-${i}`)
     
     currentFloor.appendChild(upDownContainer)
 
-    currentFloor.style.cssText = "height: 120px; min-width: 100vw ;border: 0.1px solid grey;display:flex;flex-direction:row;gap:2rem";
+    currentFloor.style.cssText = "height: 120px; min-width: 90vw ;border: 0.1px solid grey;display:flex;flex-direction:row;gap:2rem;width:auto;border-right:0px";
 
     element.appendChild(currentFloor)
 
 }
     container.innerHTML = ""
-    container.style.backgroundColor="#ddd"
+    // container.style.backgroundColor="#ddd"
+    
 
     container.appendChild(element)
 
@@ -83,7 +93,7 @@ let lift;
 for(let j=noofLift;j>0;j--){
 
 lift=document.createElement("div")
-lift.style.cssText="height:100px; min-width:100px; border:2px solid grey; display:flex;overflow: hidden; "
+lift.style.cssText="height:100px; min-width:80px; border:2px solid grey; display:flex;overflow: hidden; "
 lift.setAttribute("id",`floorid-${j}`)
 let left=document.createElement("div")
 left.setAttribute("id",`left-door-${j}`)
@@ -101,14 +111,12 @@ lift.appendChild(right)
 
 
 targetFloorNo.appendChild(lift)
-// Totallifts.push(lift)
+
 const liftState = {
     id: j,
-    isActicve: false,
-    currentFloor: 0,
-   
-    isMoving: false,
-    movingTo: null,
+    isRunning: false,
+    currentFloor: 1,
+    Destination: null,
 }
 
 
@@ -126,7 +134,7 @@ const findNearestlift = (destinationFloor) => {
     console.log("lifts",{lifts},{AllLiftData},{destinationFloor})
     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
         const lift = lifts[liftIndex];
-        if (Math.abs(lift.currentFloor - destinationFloor) < nearestLiftDistance && lift.isActicve === false) {
+        if (Math.abs(lift.currentFloor - destinationFloor) < nearestLiftDistance && lift. isRunning === false) {
             nearestLiftDistance = Math.abs(lift.currentFloor - destinationFloor);
             console.log({nearestLiftDistance})
             nearestliftId = lift.id;
@@ -135,19 +143,19 @@ const findNearestlift = (destinationFloor) => {
     
     return {nearestliftId,nearestLiftDistance};
 }
-async function hanldeDoor(door, distanceSrcToDest, targetFloor) {
-    console.log({door, distanceSrcToDest, targetFloor})
+async function hanldeLift(door, targetFloor) {
+
     const Currentlift = AllLiftData.find(lift => lift.id == door);
     let from=Currentlift.currentFloor
-//  let distance=(targetFloor-door)
+
 const distance = -1 * (targetFloor-1) * 120;
 
 const time = Math.abs(from-targetFloor) * 2;
 
 
-Currentlift.isMoving = true;
-Currentlift.movingTo = targetFloor;
-Currentlift.isActicve = true;
+
+Currentlift.Destination = targetFloor;
+Currentlift. isRunning = true;
     let lift=document.querySelector(`#floorid-${door}`)
     // console.log({lift})
     lift.style.transform = `translateY(${distance}px)`;
@@ -166,25 +174,46 @@ Currentlift.isActicve = true;
         leftDoor.classList.remove("openLeftDoor")
         rightDoor.classList.remove("openrightDoor")  
         Currentlift.currentFloor = targetFloor;
-        Currentlift.isMoving = false;
-        Currentlift.isActicve = false;
-        Currentlift.movingTo = null;
+        Currentlift. isRunning = false;
+        Currentlift.Destination = null;
     },(time*1000)+(5000))
     
 }
+
+
 function callingLift(e){
         let id=e.target.id;
         let TargetFloorNo = id.split("-")[1];
-       let {nearestliftId,nearestLiftDistance}= findNearestlift(TargetFloorNo)
-       console.log("nearestLiftDistance----callingLift"  ,nearestLiftDistance,nearestliftId)
-       if(nearestLiftDistance==0){
-        hanldeDoor()
+
+       let allLiftAtCurrentFloor= getAllListAtTargetFloor(TargetFloorNo)
+
+       if(allLiftAtCurrentFloor&&allLiftAtCurrentFloor.length>0){
+        for(let itr=0;itr<allLiftAtCurrentFloor.length;itr++){
+            hanldeLift((allLiftAtCurrentFloor[itr]),TargetFloorNo)
+        }
+return 
        }
        else{
-        hanldeDoor(nearestliftId,nearestLiftDistance,TargetFloorNo)
+        let {nearestliftId}= findNearestlift(TargetFloorNo)
+        hanldeLift(nearestliftId,TargetFloorNo)
        }
+      
+       
 
        
+}
+function getAllListAtTargetFloor(TargetFloorNo){
+    TargetFloorNo=Number(TargetFloorNo)
+    
+    let allLift=[]
+  
+    for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
+        const lift = AllLiftData[liftIndex];
+        if (TargetFloorNo==lift.currentFloor && lift.isRunning === false) {
+            allLift.push(Number(lift.id))
+        }
+    }
+    return allLift
 }
 
 
