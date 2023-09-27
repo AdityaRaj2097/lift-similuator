@@ -167,7 +167,7 @@ const findNearestlift = (destinationFloor) => {
         let lift =allLift[randomIndex]
         nearestliftId = lift;
     }
-    console.log("doint my best",{allLift})
+    // console.log("doint my best",{allLift})
     
     return {nearestliftId,nearestLiftDistance};
 }
