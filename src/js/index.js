@@ -39,7 +39,7 @@ if(noOfFloorElement&&noOfFloorElement.value>10 ||noOfFloorElement.value<2  ){
     )
     return
 }
-if(noOfLiftElement.value<noOfFloorElement.value){
+if(noOfLiftElement.value>noOfFloorElement.value){
     alert(
         "No of lift must be less than no of floors"
     )
