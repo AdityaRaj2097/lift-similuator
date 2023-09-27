@@ -32,12 +32,15 @@ padding-top:8px;
 
 
 gap:2%
+
     
 }
-#input{
+input{
     /* width: 2rem; */
-    height:2rem;
+    height:10%;
     width: 80%;
+    border-radius: 5%;
+
 }.openLeftDoor{
 
     animation: leftDoor 8s linear alternate;

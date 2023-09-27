@@ -16,7 +16,7 @@ submit.addEventListener("click",()=>
 // if(noOfLift.val)
 if(noOfLiftElement&&noOfLiftElement.value==""){
     alert(
-        "pleae Enter no of Lift"
+        "please Enter no of Lift"
     )
     return
 }
@@ -28,16 +28,24 @@ if(noOfLiftElement&& (noOfLiftElement.value>10 || noOfLiftElement.value<1 )){
 }
 if(noOfFloorElement&&noOfFloorElement.value==""){
     alert(
-        "pleae Enter no of Floors"
+        "please Enter no of Floors"
     )
     return
 }
-if(noOfFloorElement&&noOfFloorElement.value>10 ||noOfFloorElement.value<1  ){
+
+if(noOfFloorElement&&noOfFloorElement.value>10 ||noOfFloorElement.value<2  ){
     alert(
-        "No of FLoor muset be lies between 1 between 10"
+        "No of Floor must be lies between 2 to 10"
     )
     return
 }
+if(noOfLiftElement.value<noOfFloorElement.value){
+    alert(
+        "No of lift must be less than no of floors"
+    )
+    return
+}
+
 container.innerHTML=""
 ;
 noOfFloor=noOfFloorElement.value
@@ -123,12 +131,14 @@ const liftState = {
 
 
 AllLiftData.push(liftState)
-
+setInterval(() => {
+    ScheduleLift();
+}, 1000)
 
 }})
 
 const findNearestlift = (destinationFloor) => {
-   console.log("findNearestlift")
+  
     let nearestLiftDistance = noOfFloor;
     destinationFloor=Number(destinationFloor)
     let nearestliftId
@@ -194,7 +204,7 @@ Currentlift. isRunning = true;
         Currentlift.currentFloor = targetFloor;
         Currentlift. isRunning = false;
         Currentlift.Destination = null;
-    },(time*1000)+(10000))
+    },(time*1000)+(8000))
     
 }
 
@@ -202,9 +212,10 @@ Currentlift. isRunning = true;
 function callingLift(e){
         let id=e.target.id;
         let TargetFloorNo = id.split("-")[1];
-        let {nearestliftId}= findNearestlift(TargetFloorNo)
-        hanldeLift(nearestliftId,TargetFloorNo)
-return
+        // floorsRequest.push(Number(TargetFloorNo))
+        floorsRequest.push(Number(TargetFloorNo)); //
+        console.log("floorsRequestfloorsRequest",floorsRequest)
+        return
 //        let allLiftAtCurrentFloor= getAllListAtTargetFloor(TargetFloorNo)
 
 //        if(allLiftAtCurrentFloor&&allLiftAtCurrentFloor.length>0){
@@ -219,8 +230,22 @@ return
 //        }
       
        
+}
 
-       
+
+const ScheduleLift = () => {
+// console.log({floorsRequest})
+    if (floorsRequest.length === 0) return;
+    const TargetFloorNo = floorsRequest.shift();
+    let {nearestliftId}= findNearestlift(TargetFloorNo)
+    if (!nearestliftId) {
+        floorsRequest.unshift(TargetFloorNo);
+        return;
+    }
+    hanldeLift(nearestliftId,TargetFloorNo)
+   
+
+   
 }
 // function getAllListAtTargetFloor(TargetFloorNo){
 //     TargetFloorNo=Number(TargetFloorNo)
