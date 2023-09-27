@@ -142,6 +142,22 @@ const findNearestlift = (destinationFloor) => {
             nearestliftId = lift.id;
         }
     }
+    let allLift=[]
+    //  for getting random lift if 
+    
+    for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
+        const lift = lifts[liftIndex];
+        if (Math.abs(lift.currentFloor - destinationFloor) == nearestLiftDistance && lift. isRunning === false) {
+            allLift.push(Number(lift.id))
+        
+        }
+    }
+    if(allLift&&allLift.length>0){
+        const randomIndex = Math.floor(Math.random() * allLift.length);
+        let lift =allLift[randomIndex]
+        nearestliftId = lift;
+    }
+    console.log("doint my best",{allLift})
     
     return {nearestliftId,nearestLiftDistance};
 }
@@ -178,7 +194,7 @@ Currentlift. isRunning = true;
         Currentlift.currentFloor = targetFloor;
         Currentlift. isRunning = false;
         Currentlift.Destination = null;
-    },(time*1000)+(5000))
+    },(time*1000)+(10000))
     
 }
 
@@ -186,37 +202,39 @@ Currentlift. isRunning = true;
 function callingLift(e){
         let id=e.target.id;
         let TargetFloorNo = id.split("-")[1];
-
-       let allLiftAtCurrentFloor= getAllListAtTargetFloor(TargetFloorNo)
-
-       if(allLiftAtCurrentFloor&&allLiftAtCurrentFloor.length>0){
-        for(let itr=0;itr<allLiftAtCurrentFloor.length;itr++){
-            hanldeLift((allLiftAtCurrentFloor[itr]),TargetFloorNo)
-        }
-return 
-       }
-       else{
         let {nearestliftId}= findNearestlift(TargetFloorNo)
         hanldeLift(nearestliftId,TargetFloorNo)
-       }
+return
+//        let allLiftAtCurrentFloor= getAllListAtTargetFloor(TargetFloorNo)
+
+//        if(allLiftAtCurrentFloor&&allLiftAtCurrentFloor.length>0){
+//         for(let itr=0;itr<allLiftAtCurrentFloor.length;itr++){
+//             hanldeLift((allLiftAtCurrentFloor[itr]),TargetFloorNo)
+//         }
+// return 
+//        }
+//        else{
+//         let {nearestliftId}= findNearestlift(TargetFloorNo)
+//         hanldeLift(nearestliftId,TargetFloorNo)
+//        }
       
        
 
        
 }
-function getAllListAtTargetFloor(TargetFloorNo){
-    TargetFloorNo=Number(TargetFloorNo)
+// function getAllListAtTargetFloor(TargetFloorNo){
+//     TargetFloorNo=Number(TargetFloorNo)
     
-    let allLift=[]
+//     let allLift=[]
   
-    for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
-        const lift = AllLiftData[liftIndex];
-        if (TargetFloorNo==lift.currentFloor && lift.isRunning === false) {
-            allLift.push(Number(lift.id))
-        }
-    }
-    return allLift
-}
+//     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
+//         const lift = AllLiftData[liftIndex];
+//         if (TargetFloorNo==lift.currentFloor && lift.isRunning === false) {
+//             allLift.push(Number(lift.id))
+//         }
+//     }
+//     return allLift
+// }
 
 
 
