@@ -274,17 +274,23 @@ function callingLift(e){
 
 
 const findLiftAtparticularFloor = (destinationFloor) => {
-
+    let allLift=[]
     destinationFloor=Number(destinationFloor)
-    let nearestliftId
+    let nearestliftId;
     // console.log({AllLiftData})
     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
         const lift = AllLiftData[liftIndex];
         if (Number(lift.currentFloor) == destinationFloor && lift. isRunning === false) {
-            nearestLiftDistance=0
-            nearestliftId = lift.id;
-            nearestliftId=Number(nearestliftId)
+            // nearestLiftDistance=0
+            // nearestliftId = lift.id;
+            // nearestliftId=Number(nearestliftId)
+            allLift.push(Number(lift.id))
         }
+    }
+    if(allLift&&allLift.length>0){
+        const randomIndex = Math.floor(Math.random() * allLift.length);
+        let lift =allLift[randomIndex]
+        nearestliftId = lift;
     }
 
     
