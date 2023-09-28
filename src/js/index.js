@@ -258,10 +258,10 @@ function callingLift(e){
         let TargetFloorNo = id.split("-")[1];
         TargetFloorNo=Number(TargetFloorNo)
         if(isLiftGoingOnThatFloor(TargetFloorNo)){
-            // console.log(" already exist floor")
+            console.log(" already exist floor")
         }
         else{
-            // console.log(" einse else")
+            console.log(" einse else")
             floorsRequest.push(Number(TargetFloorNo));
             // console.log({AllLiftData})
         }
@@ -296,6 +296,9 @@ const ScheduleLift = () => {
 
     
     const TargetFloorNo = floorsRequest.shift();
+    if(isLiftGoingOnThatFloor(TargetFloorNo)){
+        return
+    }
    let nearestliftId;
     let nearestLiftAtFloor=findLiftAtparticularFloor(TargetFloorNo)
 
