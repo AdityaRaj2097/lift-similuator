@@ -208,7 +208,7 @@ Currentlift. isRunning = true;
     rightDoor.classList.add("openrightDoor")
     Currentlift.currentFloor = targetFloor;
         Currentlift. isRunning = false;
-        Currentlift.Destination = null;
+        
         Currentlift. isGateOpening=true
     },time*1000)
 
@@ -217,6 +217,7 @@ Currentlift. isRunning = true;
         leftDoor.classList.remove("openLeftDoor")
         rightDoor.classList.remove("openrightDoor")  
         Currentlift. isGateOpening=false
+        Currentlift.Destination = null;
         
     },(time*1000)+(5000))
     
@@ -241,30 +242,36 @@ async function openCLosedLift(door){
         Currentlift. isGateOpening=false
     },(6000))
 }
-
+function isLiftGoingOnThatFloor(TargetFloorNo){
+    let boolean=false
+    for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
+        const lift = AllLiftData[liftIndex];
+        if (Number(lift.Destination) == TargetFloorNo) {
+            boolean=true
+         
+        }
+    }
+    return  boolean
+}
 function callingLift(e){
         let id=e.target.id;
         let TargetFloorNo = id.split("-")[1];
-        // floorsRequest.push(Number(TargetFloorNo))
-        floorsRequest.push(Number(TargetFloorNo)); //
-        // console.log({floorsRequest})
-        // console.log("floorsRequestfloorsRequest",floorsRequest)
+        TargetFloorNo=Number(TargetFloorNo)
+        if(isLiftGoingOnThatFloor(TargetFloorNo)){
+            // console.log(" already exist floor")
+        }
+        else{
+            // console.log(" einse else")
+            floorsRequest.push(Number(TargetFloorNo));
+            // console.log({AllLiftData})
+        }
+      
         return
-//        let allLiftAtCurrentFloor= getAllListAtTargetFloor(TargetFloorNo)
 
-//        if(allLiftAtCurrentFloor&&allLiftAtCurrentFloor.length>0){
-//         for(let itr=0;itr<allLiftAtCurrentFloor.length;itr++){
-//             hanldeLift((allLiftAtCurrentFloor[itr]),TargetFloorNo)
-//         }
-// return 
-//        }
-//        else{
-//         let {nearestliftId}= findNearestlift(TargetFloorNo)
-//         hanldeLift(nearestliftId,TargetFloorNo)
-//        }
       
        
 }
+
 
 const findLiftAtparticularFloor = (destinationFloor) => {
 
