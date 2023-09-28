@@ -224,6 +224,7 @@ async function openCLosedLift(door){
     
     const leftDoor = document.querySelector(`#left-door-${door}`)
     const rightDoor = document.querySelector(`#right-door-${door}`)
+    Currentlift. isRunning = true;
     setTimeout(() => {    
   
     leftDoor.classList.add("openLeftDoor")
@@ -232,7 +233,7 @@ async function openCLosedLift(door){
     setTimeout(()=>{
         leftDoor.classList.remove("openLeftDoor")
         rightDoor.classList.remove("openrightDoor")  
-        
+        Currentlift. isRunning = false;
     },(6000))
 }
 
