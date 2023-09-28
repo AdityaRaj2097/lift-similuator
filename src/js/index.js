@@ -1,4 +1,4 @@
-console.log("Inside index.js file")
+// console.log("Inside index.js file")
 const submit =document.getElementById("submit")
 // const container=document.getElementById("container")
 const container=document.querySelector(".main")
@@ -46,7 +46,7 @@ if(Number(noOfLiftElement.value)>Number(noOfFloorElement.value)){
     return
 }
 
-console.log("donnnnnnn",noOfLiftElement.value,noOfFloorElement.value)
+// console.log("donnnnnnn",noOfLiftElement.value,noOfFloorElement.value)
 
 container.innerHTML=""
 ;
@@ -76,13 +76,21 @@ for(let i=noOfFloor;i>0;i--){
     downButton.id = `Down-${i}`
     // element.style.id=`floor-${i}`
 let upDownContainer=document.createElement("div")
-upButton.addEventListener('click', this.callingLift)
-downButton.addEventListener('click',this. callingLift)
+if(i!=noOfFloor){
+    upButton.addEventListener('click', this.callingLift)
+    upDownContainer.appendChild(upButton)
+}
+if(i!=1){
+    downButton.addEventListener('click',this. callingLift)
+    upDownContainer.appendChild(downButton)
+}
+// upButton.addEventListener('click', this.callingLift)
+// downButton.addEventListener('click',this. callingLift)
 upButton.style.cssText="min-width:100%"
 downButton.style.cssText="min-width:100%"
 container.style.cssText=" width:auto;min-width:100vw"
-    upDownContainer.appendChild(upButton)
-    upDownContainer.appendChild(downButton)
+    // upDownContainer.appendChild(upButton)
+    // upDownContainer.appendChild(downButton)
     upDownContainer.style.cssText="display:flex; flex-direction:column ;justify-content: space-around;min-width:80px"
     upDownContainer.setAttribute("id",`Floor-up-down${i}`)
     currentFloor.setAttribute("id",`Floor-${i}`)
@@ -145,12 +153,12 @@ const findNearestlift = (destinationFloor) => {
     destinationFloor=Number(destinationFloor)
     let nearestliftId
     let  lifts=AllLiftData
-    console.log("lifts",{lifts},{AllLiftData},{destinationFloor})
+    // console.log("lifts",{lifts},{AllLiftData},{destinationFloor})
     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
         const lift = lifts[liftIndex];
         if (Math.abs(lift.currentFloor - destinationFloor) < nearestLiftDistance && lift. isRunning === false) {
             nearestLiftDistance = Math.abs(lift.currentFloor - destinationFloor);
-            console.log({nearestLiftDistance})
+            // console.log({nearestLiftDistance})
             nearestliftId = lift.id;
         }
     }
@@ -171,7 +179,7 @@ const findNearestlift = (destinationFloor) => {
     }
     // console.log("doint my best",{allLift})
     
-    return {nearestliftId,nearestLiftDistance};
+    return nearestliftId;
 }
 async function hanldeLift(door, targetFloor) {
 
@@ -197,26 +205,44 @@ Currentlift. isRunning = true;
   
     leftDoor.classList.add("openLeftDoor")
     rightDoor.classList.add("openrightDoor")
+    Currentlift.currentFloor = targetFloor;
+        Currentlift. isRunning = false;
+        Currentlift.Destination = null;
     },time*1000)
 
 
     setTimeout(()=>{
         leftDoor.classList.remove("openLeftDoor")
         rightDoor.classList.remove("openrightDoor")  
-        Currentlift.currentFloor = targetFloor;
-        Currentlift. isRunning = false;
-        Currentlift.Destination = null;
-    },(time*1000)+(8000))
+        
+    },(time*1000)+(5000))
     
 }
 
+async function openCLosedLift(door){
+   
+    
+    const leftDoor = document.querySelector(`#left-door-${door}`)
+    const rightDoor = document.querySelector(`#right-door-${door}`)
+    setTimeout(() => {    
+  
+    leftDoor.classList.add("openLeftDoor")
+    rightDoor.classList.add("openrightDoor")
+    },)
+    setTimeout(()=>{
+        leftDoor.classList.remove("openLeftDoor")
+        rightDoor.classList.remove("openrightDoor")  
+        
+    },(5000))
+}
 
 function callingLift(e){
         let id=e.target.id;
         let TargetFloorNo = id.split("-")[1];
         // floorsRequest.push(Number(TargetFloorNo))
         floorsRequest.push(Number(TargetFloorNo)); //
-        console.log("floorsRequestfloorsRequest",floorsRequest)
+        // console.log({floorsRequest})
+        // console.log("floorsRequestfloorsRequest",floorsRequest)
         return
 //        let allLiftAtCurrentFloor= getAllListAtTargetFloor(TargetFloorNo)
 
@@ -234,21 +260,57 @@ function callingLift(e){
        
 }
 
+const findLiftAtparticularFloor = (destinationFloor) => {
 
+    destinationFloor=Number(destinationFloor)
+    let nearestliftId
+    // console.log({AllLiftData})
+    for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
+        const lift = AllLiftData[liftIndex];
+        if (Number(lift.currentFloor) == destinationFloor && lift. isRunning === false) {
+            nearestLiftDistance=0
+            nearestliftId = lift.id;
+            nearestliftId=Number(nearestliftId)
+        }
+    }
+
+    
+    return nearestliftId;
+}
 const ScheduleLift = () => {
-// console.log({floorsRequest})
+
     if (floorsRequest.length === 0) return;
+
+    
     const TargetFloorNo = floorsRequest.shift();
-    let {nearestliftId}= findNearestlift(TargetFloorNo)
+   let nearestliftId;
+    let nearestLiftAtFloor=findLiftAtparticularFloor(TargetFloorNo)
+
+    if(nearestLiftAtFloor){
+        nearestliftId=nearestLiftAtFloor
+        openCLosedLift(nearestliftId)
+        return
+    }
+    else{
+        let nealiftId= findNearestlift(TargetFloorNo)
+      
+        if(nealiftId){
+            nearestliftId=nealiftId
+        }
+    }
+
     if (!nearestliftId) {
         floorsRequest.unshift(TargetFloorNo);
         return;
     }
     hanldeLift(nearestliftId,TargetFloorNo)
    
+   
 
    
 }
+
+
 // function getAllListAtTargetFloor(TargetFloorNo){
 //     TargetFloorNo=Number(TargetFloorNo)
     
