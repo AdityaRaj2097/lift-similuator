@@ -137,6 +137,7 @@ const liftState = {
     isRunning: false,
     currentFloor: 1,
     Destination: null,
+    isGateOpening:false
 }
 
 
@@ -156,7 +157,7 @@ const findNearestlift = (destinationFloor) => {
     // console.log("lifts",{lifts},{AllLiftData},{destinationFloor})
     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
         const lift = lifts[liftIndex];
-        if (Math.abs(lift.currentFloor - destinationFloor) < nearestLiftDistance && lift. isRunning === false) {
+        if (Math.abs(lift.currentFloor - destinationFloor) < nearestLiftDistance && lift. isRunning === false&&lift. isGateOpening == false) {
             nearestLiftDistance = Math.abs(lift.currentFloor - destinationFloor);
             // console.log({nearestLiftDistance})
             nearestliftId = lift.id;
@@ -167,7 +168,7 @@ const findNearestlift = (destinationFloor) => {
     
     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
         const lift = lifts[liftIndex];
-        if (Math.abs(lift.currentFloor - destinationFloor) == nearestLiftDistance && lift. isRunning === false) {
+        if (Math.abs(lift.currentFloor - destinationFloor) == nearestLiftDistance && lift. isRunning === false&&lift. isGateOpening == false) {
             allLift.push(Number(lift.id))
         
         }
@@ -208,12 +209,14 @@ Currentlift. isRunning = true;
     Currentlift.currentFloor = targetFloor;
         Currentlift. isRunning = false;
         Currentlift.Destination = null;
+        Currentlift. isGateOpening=true
     },time*1000)
 
 
     setTimeout(()=>{
         leftDoor.classList.remove("openLeftDoor")
         rightDoor.classList.remove("openrightDoor")  
+        Currentlift. isGateOpening=false
         
     },(time*1000)+(5000))
     
@@ -221,19 +224,21 @@ Currentlift. isRunning = true;
 
 async function openCLosedLift(door){
    
-    
+ 
+    const Currentlift = AllLiftData.find(lift => lift.id == door);
     const leftDoor = document.querySelector(`#left-door-${door}`)
     const rightDoor = document.querySelector(`#right-door-${door}`)
-    Currentlift. isRunning = true;
+   
     setTimeout(() => {    
   
     leftDoor.classList.add("openLeftDoor")
     rightDoor.classList.add("openrightDoor")
+    Currentlift. isGateOpening=true
     },)
     setTimeout(()=>{
         leftDoor.classList.remove("openLeftDoor")
         rightDoor.classList.remove("openrightDoor")  
-        Currentlift. isRunning = false;
+        Currentlift. isGateOpening=false
     },(6000))
 }
 
@@ -268,7 +273,7 @@ const findLiftAtparticularFloor = (destinationFloor) => {
     // console.log({AllLiftData})
     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
         const lift = AllLiftData[liftIndex];
-        if (Number(lift.currentFloor) == destinationFloor && lift. isRunning === false) {
+        if (Number(lift.currentFloor) == destinationFloor && lift. isGateOpening === false) {
             nearestLiftDistance=0
             nearestliftId = lift.id;
             nearestliftId=Number(nearestliftId)
