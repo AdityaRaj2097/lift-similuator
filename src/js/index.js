@@ -273,7 +273,7 @@ const findLiftAtparticularFloor = (destinationFloor) => {
     // console.log({AllLiftData})
     for (let liftIndex = 0; liftIndex < AllLiftData.length; liftIndex++) {
         const lift = AllLiftData[liftIndex];
-        if (Number(lift.currentFloor) == destinationFloor && lift. isGateOpening === false) {
+        if (Number(lift.currentFloor) == destinationFloor && lift. isRunning === false) {
             nearestLiftDistance=0
             nearestliftId = lift.id;
             nearestliftId=Number(nearestliftId)
