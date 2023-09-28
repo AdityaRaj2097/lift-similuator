@@ -233,7 +233,7 @@ async function openCLosedLift(door){
         leftDoor.classList.remove("openLeftDoor")
         rightDoor.classList.remove("openrightDoor")  
         
-    },(5000))
+    },(6000))
 }
 
 function callingLift(e){
